@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form version="1.1" hideEdit="true" hideAppBar="true" script="components/sidebar.js,js/hide_header.js,js/create_correlation_rule.js" stylesheet="components/sidebar.css,css/create_correlation_rule.css" theme="dark">
+    <label>Create Correlation Rule</label>
+    <description>Create new correlation rules for threat detection</description>
+
+    <row>
+        <panel>
+            <html>
+                <div class="dashboard-container">
+                    <!-- Sidebar will be loaded here -->
+                    <div id="sidebar"></div>
+                    
+                    <!-- Main Content -->
+                    <div class="main-content">
+                        <div class="correlation_header">
+                            <div class="title-container">
+                                <h1><i class="icon-plus"></i> Create Correlation Rule</h1>
+                                <p class="subtitle">Configure a new threat detection rule</p>
+                            </div>
+                        </div>
+
+                        <div class="create-correlation-rule">
+                            <form id="correlationForm">
+                                <!-- Correlation Search Section -->
+                                <div class="form-section">
+                                    <h3>Correlation Search</h3>
+                                    <div class="form-group">
+                                        <label for="searchName">Search Name</label>
+                                        <input type="text" id="searchName" class="form-control" required="required" />
+                                        <span class="help-text">A unique name for this correlation search</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea id="description" class="form-control" required="required"></textarea>
+                                        <span class="help-text">Describe the purpose of this correlation search</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="securityDomain">Security Domain</label>
+                                        <select id="securityDomain" class="form-control" required="required">
+                                            <option value="access">Access</option>
+                                            <option value="endpoint">Endpoint</option>
+                                            <option value="network">Network</option>
+                                            <option value="threat">Threat</option>
+                                            <option value="identity">Identity</option>
+                                            <option value="audit">Audit</option>
+                                            <option value="vulnerability">Vulnerability</option>
+                                            <option value="malware">Malware</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="severity">Severity</label>
+                                        <select id="severity" class="form-control" required="required">
+                                            <option value="low">Low</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="high">High</option>
+                                            <option value="critical">Critical</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="search">Search</label>
+                                        <div class="search-container">
+                                            <textarea id="search" class="form-control" required="required"></textarea>
+                                            <div class="search-helpers">
+                                                <button type="button" id="validateSearch" class="btn btn-secondary">Validate Search</button>
+                                                <button type="button" id="testSearch" class="btn btn-secondary">Test Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Time Range Section -->
+                                <div class="form-section">
+                                    <h3>Time Range</h3>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input type="radio" id="relativeTime" name="timeType" value="relative" checked="checked" />
+                                            <label for="relativeTime">Relative</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" id="absoluteTime" name="timeType" value="absolute" />
+                                            <label for="absoluteTime">Absolute</label>
+                                        </div>
+                                    </div>
+
+                                    <div id="relativeTimeRange">
+                                        <div class="form-group">
+                                            <label for="earliestTime">Earliest Time</label>
+                                            <input type="text" id="earliestTime" class="form-control" value="-24h" required="required" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="latestTime">Latest Time</label>
+                                            <input type="text" id="latestTime" class="form-control" value="now" required="required" />
+                                        </div>
+                                    </div>
+
+                                    <div id="absoluteTimeRange" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="startTime">Start Time</label>
+                                            <input type="datetime-local" id="startTime" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="endTime">End Time</label>
+                                            <input type="datetime-local" id="endTime" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Schedule Section -->
+                                <div class="form-section">
+                                    <h3>Schedule</h3>
+                                    <div class="form-group">
+                                        <label for="scheduleType">Schedule Type</label>
+                                        <select id="scheduleType" class="form-control" required="required">
+                                            <option value="realtime">Real-time</option>
+                                            <option value="cron">Custom Schedule (Cron)</option>
+                                        </select>
+                                    </div>
+
+                                    <div id="cronSchedule" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="cronExpression">Cron Expression</label>
+                                            <input type="text" id="cronExpression" class="form-control" placeholder="*/5 * * * *" />
+                                            <span class="help-text">Format: minute hour day month weekday</span>
+                                            <div id="cronDescription" class="cron-description"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Annotations Section -->
+                                <div class="form-section">
+                                    <h3>Annotations</h3>
+                                    <div class="form-group">
+                                        <label for="notableTitleField">Notable Title Field</label>
+                                        <input type="text" id="notableTitleField" class="form-control" placeholder="Enter field name for Notable Title" />
+                                        <span class="help-text">Please add Splunk result field name that show in the Incident Title.</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="mitreAttack">MITRE ATT&amp;CK</label>
+                                        <input type="text" id="mitreAttack" class="form-control" placeholder="Enter MITRE ATT&amp;CK techniques (comma-separated)" />
+                                        <span class="help-text">Example: T1078,T1110,T1003</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="killChain">Kill Chain</label>
+                                        <input type="text" id="killChain" class="form-control" placeholder="Enter Kill Chain phases (comma-separated)" />
+                                        <span class="help-text">Example: Reconnaissance,Initial Access,Execution</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cis20">CIS20</label>
+                                        <input type="text" id="cis20" class="form-control" placeholder="Enter CIS20 controls (comma-separated)" />
+                                        <span class="help-text">Example: CIS 1,CIS 3,CIS 8</span>
+                                    </div>
+                                </div>
+
+                                <!-- Professional Note Section -->
+                                <div class="form-section note-section">
+                                    <div class="professional-note">
+                                        <h3><i class="fas fa-info-circle"></i> Advanced Configuration Note</h3>
+                                        <p>For advanced correlation rule configurations such as trigger conditions and throttling settings, please follow these steps after creating the rule:</p>
+                                        <ol>
+                                            <li>Navigate to <strong>Settings</strong> > <strong>Searches, reports, and alerts</strong></li>
+                                            <li>Locate your correlation rule by name</li>
+                                            <li>Click on the rule to access its configuration page</li>
+                                            <li>Under the <strong>Alert Actions</strong> tab, you can configure:
+                                                <ul>
+                                                    <li>Custom trigger conditions</li>
+                                                    <li>Throttling settings</li>
+                                                    <li>Suppression rules</li>
+                                                    <li>Additional alert actions</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                        <p class="note-footer">
+                                            <i class="fas fa-lightbulb"></i> <strong>Pro Tip:</strong> Configure throttling settings to prevent alert fatigue and optimize your correlation rule's effectiveness.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="form-actions">
+                                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                                    <button type="submit" id="saveBtn" class="btn btn-primary">Save Rule</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </html>
+        </panel>
+    </row>
+</form> 

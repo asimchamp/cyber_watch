@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<nav search_view="search" color_theme="dark">
+  <view name="home" default="true" />
+</nav> 

@@ -1,0 +1,73 @@
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <div class="logo-expanded">
+                <img src="/static/app/cyber_watch/image/cyberwatch_logo.png" alt="CyberWatch Logo" class="logo-image">
+                <div class="logo-text">
+                    <span class="text-top">Cyber</span>
+                    <span class="text-bottom">Watch</span>
+                </div>
+            </div>
+            <img src="/static/app/cyber_watch/image/cyberwatch_logo.png" alt="CyberWatch Logo" class="logo-collapsed">
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="angle left icon"></i>
+        </button>
+    </div>
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="home" class="nav-link">
+                    <div class="icon-container">
+                        <i class="dashboard icon"></i>
+                    </div>
+                    <span class="nav-text">Overview</span>
+                </a>
+            </li>
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link">
+                    <div class="icon-container">
+                        <i class="bolt icon"></i>
+                    </div>
+                    <span class="nav-text">Correlation Rule</span>
+                    <i class="chevron down icon submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <a href="create_correlation_rule">
+                            <div class="icon-container">
+                                <i class="plus circle icon"></i>
+                            </div>
+                            <span class="nav-text">Create Rule</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="correlation_setup" class="active">
+                            <div class="icon-container">
+                                <i class="list icon"></i>
+                            </div>
+                            <span class="nav-text">Correlation Library</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="incident" class="nav-link">
+                    <div class="icon-container">
+                        <i class="fa-solid fa-code-compare"></i>
+                    </div>
+                    <span class="nav-text">Incident</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="setup_page" class="nav-link">
+                    <div class="icon-container">
+                        <i class="cog icon"></i>
+                    </div>
+                    <span class="nav-text">Setting</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div> 

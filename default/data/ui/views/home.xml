@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dashboard version="1.1" isDashboard="false" hideEdit="true" hideAppBar="true" script="components/sidebar.js,js/hide_header.js,js/home.js" stylesheet="components/sidebar.css,css/home.css" theme="dark">
+    <label>Cyber Overview</label>
+    <description>Status and Overview of your SOC rules</description>
+    
+    <search id="notable_count_24h">
+        <query>index=soc_notable | stats count</query>
+        <earliest>-24h</earliest>
+        <latest>now</latest>
+        <refresh>30s</refresh>
+    </search>
+    
+    <search id="notable_trend_24h">
+        <query>index=soc_notable | timechart span=3h count</query>
+        <earliest>-24h</earliest>
+        <latest>now</latest>
+        <refresh>30s</refresh>
+    </search>
+    
+    <row>
+        <panel>
+            <html>
+                <div class="dashboard-container">
+                    <!-- Sidebar will be loaded here -->
+                    <!-- Main Content -->
+                    <div class="main-content">
+                        <div class="overview-header">
+                            <h1>Overview</h1>
+                            <div class="time-filter">
+                                <button class="time-btn active" data-period="24h">24h</button>
+                                <button class="time-btn" data-period="7D">7D</button>
+                                <button class="time-btn" data-period="30D">30D</button>
+                            </div>
+                        </div>
+                        
+                        <div class="metrics-container">
+                            <!-- Notable Triggers Box -->
+                            <div class="metric-box users-box">
+                                <div class="metric-content">
+                                    <div class="metric-header">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-title-row">
+                                                <h3>Notable Triggers</h3>
+                                                <span class="trend positive">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                    <span class="trend-value">0</span>%
+                                                </span>
+                                            </div>
+                                            <div class="metric-value">
+                                                <span class="number" id="notableCount">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="trendline-chart"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Water Usage Box -->
+                            <div class="metric-box water-box">
+                                <div class="metric-content">
+                                    <div class="metric-header">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-water"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-title-row">
+                                                <h3>Critical Notable</h3>
+                                                <span class="trend negative">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                    0%
+                                                </span>
+                                            </div>
+                                            <div class="metric-value">
+                                                <span class="number" id="waterCount">Loading...</span>
+                                                <span class="unit"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="trendline-chart"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Electricity Box -->
+                            <div class="metric-box electricity-box">
+                                <div class="metric-content">
+                                    <div class="metric-header">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-bolt"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-title-row">
+                                                <h3>High Notable</h3>
+                                                <span class="trend positive">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                    0%
+                                                </span>
+                                            </div>
+                                            <div class="metric-value">
+                                                <span class="number" id="electricityCount">Loading...</span>
+                                                <span class="unit"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="trendline-chart"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Gas Usage Box -->
+                            <div class="metric-box gas-box">
+                                <div class="metric-content">
+                                    <div class="metric-header">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-fire"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-title-row">
+                                                <h3>Correlation Rules</h3>
+                                                <span class="trend positive">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                    0%
+                                                </span>
+                                            </div>
+                                            <div class="metric-value">
+                                                <span class="number" id="gasCount">Loading...</span>
+                                                <span class="unit"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="trendline-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Charts Container -->
+                        <div class="charts-container">
+                            <!-- Usage Overview Chart -->
+                            <div class="usage-overview">
+                                <div class="chart-header">
+                                    <h2><i class="fas fa-chart-line"></i> Usage Overview</h2>
+                                    <div class="chart-filters">
+                                        <button type="button" class="filter-btn active" data-filter="all">All</button>
+                                        <button type="button" class="filter-btn" data-filter="notable">Notable</button>
+                                        <button type="button" class="filter-btn" data-filter="critical">Critical</button>
+                                        <button type="button" class="filter-btn" data-filter="high">High</button>
+                                    </div>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="mainChart"></canvas>
+                                    <div class="loading-animation" style="display: none;">
+                                        <div class="three-body">
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notable Stats Card -->
+                            <div class="chart-card">
+                                <h3><i class="fas fa-building"></i> Notable Stats</h3>
+                                <div class="circular-progress">
+                                    <div class="loading-animation" style="display: none;">
+                                        <div class="three-body">
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress critical">
+                                        <div class="circle-wrap">
+                                            <div class="circle">
+                                                <div class="circle-progress"></div>
+                                                <div class="circle-value">0%</div>
+                                            </div>
+                                        </div>
+                                        <div class="info">
+                                            <div class="info-header">
+                                                <h4><i class="fas fa-exclamation-triangle"></i> Critical</h4>
+                                            </div>
+                                            <p class="critical-count">0 Notables</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress high">
+                                        <div class="circle-wrap">
+                                            <div class="circle">
+                                                <div class="circle-progress"></div>
+                                                <div class="circle-value">0%</div>
+                                            </div>
+                                        </div>
+                                        <div class="info">
+                                            <div class="info-header">
+                                                <h4><i class="fas fa-exclamation"></i> High</h4>
+                                            </div>
+                                            <p class="high-count">0 Notables</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress rules">
+                                        <div class="circle-wrap">
+                                            <div class="circle">
+                                                <div class="circle-progress"></div>
+                                                <div class="circle-value">0%</div>
+                                            </div>
+                                        </div>
+                                        <div class="info">
+                                            <div class="info-header">
+                                                <h4><i class="fas fa-book"></i> Rules</h4>
+                                            </div>
+                                            <p class="rules-count">0 Rules</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Charts Container -->
+                        <div class="git-container">
+                        <!-- Correlation Notable Events Chart -->
+                            <div class="chart-card correlation-events">
+                                <div class="chart-header">
+                                    <h2><i class="fas fa-network-wired"></i> Correlation Notable Events</h2>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="correlationChart"></canvas>
+                                    <div class="loading-animation" style="display: none;">
+                                        <div class="three-body">
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notables Report Chart -->
+                            <div class="chart-card activity-center">
+                                <div class="chart-header">
+                                    <h2><i class="fas fa-history"></i> Activity Center</h2>
+                                    <div class="auto-refresh">
+                                        <label class="switch">
+                                            <input type="checkbox" id="autoRefreshToggle" checked="checked" />
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span class="status">On</span>
+                                    </div>
+                                </div>
+                                <div class="activity-container">
+                                    <div class="loading-animation" style="display: none;">
+                                        <div class="three-body">
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                            <div class="three-body__dot"></div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-timeline"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </html>
+        </panel>
+    </row>
+</dashboard>

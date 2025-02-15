@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dashboard version="1.1" isDashboard="false" hideEdit="true" hideAppBar="true" script="components/sidebar.js,js/hide_header.js,js/setup.js" stylesheet="components/sidebar.css,css/hide_header.css,css/setup_page.css" theme="dark">
+    <label>Setting</label>
+    <row>
+        <panel>
+            <html>
+                <div class="dashboard-container">
+                    <!-- Main Content -->   
+                    <div class="main-content">
+                        <div class="setup-header">
+                            <h1>CyberWatch Setup</h1>
+                            <div class="menu-bar">
+                                <button class="menu-button active" data-section="general">General</button>
+                                <button class="menu-button" data-section="other">Other</button>
+                            </div>
+                        </div>
+                        
+                        <!-- General Section -->
+                        <div id="general-section" class="setup-content-section active">
+                            <div class="setup-card">
+                                <div class="card-header">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h3>Required Capabilities</h3>
+                                </div>
+                                <div class="card-content">
+                                    <p>The following capabilities are required for this app to function properly:</p>
+                                    <ul class="capability-list">
+                                        <li><i class="fas fa-check-circle"></i> admin_all_objects</li>
+                                        <li><i class="fas fa-check-circle"></i> edit_alert_actions</li>
+                                        <li><i class="fas fa-check-circle"></i> edit_search_schedule</li>
+                                        <li><i class="fas fa-check-circle"></i> list_search</li>
+                                        <li><i class="fas fa-check-circle"></i> schedule_search</li>
+                                        <li><i class="fas fa-check-circle"></i> write_alert_actions</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="setup-card">
+                                <div class="card-header">
+                                    <i class="fas fa-database"></i>
+                                    <h3>Indexes</h3>
+                                </div>
+                                <div class="card-content">
+                                    <p>The following Splunk indexes are used by this app:</p>
+                                    <div class="index-grid">
+                                        <div class="index-item">
+                                            <h4>soc_notable</h4>
+                                            <p>Stores notable events</p>
+                                        </div>
+                                        <div class="index-item">
+                                            <h4>soc_summary</h4>
+                                            <p>Stores summary data</p>
+                                        </div>
+                                        <div class="index-item">
+                                            <h4>soc_threat_intel</h4>
+                                            <p>Stores threat intelligence data</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Section -->
+                        <div id="other-section" class="setup-content-section">
+                            <div class="setup-card">
+                                <div class="card-header">
+                                    <i class="fas fa-cog"></i>
+                                    <h3>Additional Settings</h3>
+                                </div>
+                                <div class="card-content">
+                                    <p>More configuration options will be available here in future updates.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </html>
+        </panel>
+    </row>
+</dashboard> 
