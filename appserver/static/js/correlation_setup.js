@@ -464,7 +464,6 @@ require([
                 'action.correlationsearch.enabled': '1',
                 'action.correlationsearch.label': formData.name,
                 'action.script': '1',
-                'action.script.filename': 'socnotable.py',
                 'action.script.param.description': formData.description,
                 'action.script.param.rule_name': formData.name,
                 'action.script.param.severity': formData.severity,

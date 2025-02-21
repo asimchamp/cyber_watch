@@ -13,9 +13,9 @@ def get_next_incident_number():
     """Generate next unique incident number in ascending order"""
     try:
         # Path for storing the last incident number and queue
-        inc_file = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'last_incident.json')
+        inc_file = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'var', 'log', 'splunk', 'last_incident.json')
         lock_file = inc_file + '.lock'
-        transaction_log = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'incident_transactions.log')
+        transaction_log = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'incident_transactions.log')
         
         # Create directories if they don't exist
         os.makedirs(os.path.dirname(inc_file), exist_ok=True)
@@ -31,7 +31,7 @@ def get_next_incident_number():
                 # Try to recover by reading existing incidents
                 last_number = 0
                 try:
-                    with open(os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'socnotable.json'), 'r') as f:
+                    with open(os.path.join(os.environ.get('SPLUNK_HOME', ''), 'var', 'log', 'splunk', 'socnotable.json'), 'r') as f:
                         for line in f:
                             try:
                                 incident = json.loads(line)
@@ -107,7 +107,7 @@ def get_next_incident_number():
                         # If reading fails, try to recover from socnotable.json
                         last_number = 0
                         try:
-                            with open(os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'socnotable.json'), 'r') as f:
+                            with open(os.path.join(os.environ.get('SPLUNK_HOME', ''), 'var', 'log', 'splunk', 'socnotable.json'), 'r') as f:
                                 for line in f:
                                     try:
                                         incident = json.loads(line)
@@ -179,7 +179,7 @@ def get_next_incident_number():
         try:
             # Read the last incident from socnotable.json
             last_number = 0
-            with open(os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'socnotable.json'), 'r') as f:
+            with open(os.path.join(os.environ.get('SPLUNK_HOME', ''), 'var', 'log', 'splunk', 'socnotable.json'), 'r') as f:
                 for line in f:
                     try:
                         incident = json.loads(line)
@@ -234,7 +234,7 @@ class JsonFormatter(logging.Formatter):
                     import gzip
                     
                     # Create log file path
-                    log_file = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'socnotable.json')
+                    log_file = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'var', 'log', 'splunk', 'socnotable.json')
                     
                     # Ensure directory exists
                     os.makedirs(os.path.dirname(log_file), exist_ok=True)
@@ -309,7 +309,7 @@ class JsonFormatter(logging.Formatter):
         except Exception as e:
             # Log any formatting errors
             try:
-                error_log = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'logs', 'formatter_errors.log')
+                error_log = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'formatter_errors.log')
                 os.makedirs(os.path.dirname(error_log), exist_ok=True)
                 with open(error_log, 'a') as f:
                     f.write(json.dumps({
@@ -343,7 +343,7 @@ def setup_logging():
     console_handler.setFormatter(console_formatter)
     
     # Create file handler for notable events
-    log_file = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'socnotable.json')
+    log_file = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'var', 'log', 'splunk', 'socnotable.json')
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(JsonFormatter())
@@ -486,7 +486,7 @@ def cleanup_logs(max_lines=2000):
     status = {}
     try:
         # Only handle incident_transactions.log
-        log_path = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'logs', 'incident_transactions.log')
+        log_path = os.path.join(os.environ.get('SPLUNK_HOME', ''), 'etc', 'apps', 'cyber_watch', 'static', 'incident_transactions.log')
         
         try:
             if not os.path.exists(log_path):
