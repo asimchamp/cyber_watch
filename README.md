@@ -1,7 +1,7 @@
 # Cyber Watch for Splunk 🛡️
 
 <p align="center">
-  <img src="static/appIcon.png" alt="Cyber Watch Logo" width="200"/>
+  <img src="appserver/static/image/cyberwatch.png" alt="Cyber Watch Logo" width="1000" height="250"/>
 </p>
 
 [![Splunk Compatibility](https://img.shields.io/badge/Splunk-8.x%2B-blue.svg)](https://www.splunk.com)
